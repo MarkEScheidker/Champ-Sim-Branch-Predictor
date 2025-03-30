@@ -1,0 +1,33 @@
+{
+  "ooo_cpu": [
+    {
+      "branch_predictor": {
+        "path": "gshare"
+      },
+      "btb": {
+        "path": "basic_btb"
+      }
+    }
+  ],
+  "L1I": {
+    "prefetcher": {
+      "path": "no"
+    }
+  },
+  "L1D": {
+    "prefetcher": {
+      "path": "no"
+    }
+  },
+  "L2C": {
+    "prefetcher": {
+      "path": "no"
+    }
+  },
+  "LLC": {
+    "replacement": {
+      "path": "lru"
+    }
+  }
+}
+
