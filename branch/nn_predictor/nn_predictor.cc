@@ -4,14 +4,14 @@
 #include <cstring>
 #include <iostream>
 
-// helper function for TensorFlow to deallocate memory
+//helper function for TensorFlow to deallocate memory
 namespace {
 static void free_deallocator(void* data, std::size_t, void*) {
   std::free(data);
 }
-}  // namespace
+}  //namespace
 
-// Constructor: Load TensorFlow model and allocate input tensor
+//load tensorflow model and allocate input tensor
 nn_predictor::nn_predictor(O3_CPU* cpu) : branch_predictor(cpu) {
   status = TF_NewStatus();
   graph = TF_NewGraph();
@@ -41,10 +41,10 @@ nn_predictor::nn_predictor(O3_CPU* cpu) : branch_predictor(cpu) {
   reusable_input = TF_NewTensor(TF_FLOAT, dims, 2, buf, HISTORY_SIZE * sizeof(float), free_deallocator, nullptr);
 }
 
-// predict branch outcome using TensorFlow model
+//predict branch outcome using TensorFlow model
 bool nn_predictor::predict_branch(champsim::address /*ip*/) {
   if (!session || !input_op || !output_op || !reusable_input) {
-    return true;  // default to taken if tensorflow isn't ready
+    return true;  //default to taken if tensorflow isn't ready
   }
 
   //prepare input tensor from branch history
@@ -77,10 +77,10 @@ bool nn_predictor::predict_branch(champsim::address /*ip*/) {
   float prob = *static_cast<const float*>(TF_TensorData(out_tensor));
   TF_DeleteTensor(out_tensor);
 
-  return prob >= 0.5f;  // predict taken if probability is more than 50 percent
+  return prob >= 0.5f;  //predict taken if probability is more than 50 percent
 }
 
-// Update branch history with actual outcome
+//update branch history with actual outcome
 void nn_predictor::last_branch_result(champsim::address, champsim::address, bool taken, uint8_t) {
   branch_history.push_back(taken);
   if (branch_history.size() > HISTORY_SIZE)
